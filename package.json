@@ -1,0 +1,19 @@
+{
+  "name": "curie",
+  "version": "1.0.0",
+  "description": "simple bot to return public info about steam user",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "curie"
+  ],
+  "author": "andyCChen",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.7.0",
+    "dotenv": "^16.0.1"
+  }
+}
