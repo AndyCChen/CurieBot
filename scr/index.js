@@ -1,11 +1,17 @@
-// setup env variables with dotenv
-require('dotenv').config();
+// load token from .env file
+require('dotenv').config({ path: '../.env'});
 
 // Import discord.js
 const { Client, Intents } = require('discord.js');
 
 // instantiate new client instance
-const client = new Client({intents: [Intents.FLAGS.GUILDS]});
+const client = new Client(
+   { intents: 
+      [
+         Intents.FLAGS.GUILDS
+      ]
+   }
+);
 
 // run when client is ready
 client.once('ready', () => {
