@@ -5,6 +5,13 @@ require('dotenv').config({ path: '../.env'});
 const { Client, Intents, Collection } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
+const admin = require('firebase-admin');
+const serviceAccount = require("../admin.json");
+ 
+// Initialize Firebase
+admin.initializeApp({
+   credential: admin.credential.cert(serviceAccount)
+ });
 
 // instantiate new client instance
 const client = new Client(
@@ -37,13 +44,14 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
-   // return if interation is not a command
+   // return if not a slash command
    if (!interaction.isCommand()) return;
 
    const command = client.commands.get(interaction.commandName);
 
    if (!command) return;
 
+   // run slash command
    try {
       await command.execute(interaction);
    } catch (error) {
