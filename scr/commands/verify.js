@@ -3,7 +3,7 @@
 require('dotenv').config({ path: '../../.env'});
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fetch = require('node-fetch');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { getFirestore } = require('firebase-admin/firestore');
 
 module.exports = {
    data: new SlashCommandBuilder()
@@ -20,21 +20,25 @@ module.exports = {
          return text.replace(/(\*|_|`|\\)/g, '\\$1');
       }
 
+      // set api request url
       const key = process.env.KEY
       const steam_ID = interaction.options.getString('steam_id');
       const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${key}&steamids=${steam_ID}`;
 
+      // make api request
       const response = await fetch(url);
       const data = await response.json();
 
+      // playerCount = 0 if steamID is not linked to a existing steam account, else playerCount = 1
       const playerCount = data.response.players.length;
-      const playerName = escapeMarkdown(data.response.players[0].personaname);
-      const discordID = interaction.user.id;
+
       console.log(interaction.user.id);
 
       if (playerCount != 1) {
          await interaction.reply('Error, steam id not associated with a account.');
       } else {
+         const discordID = interaction.user.id;
+
          // instantiate firestore
          const db = getFirestore();
 
@@ -43,9 +47,10 @@ module.exports = {
 
          // write steam_ID into database
          await docRef.set({
-            steamID: steam_ID,
+            'steamID': steam_ID,
          });
 
+         const playerName = escapeMarkdown(data.response.players[0].personaname);
          await interaction.reply(`Success!\nHeyo ${playerName}`);
       }
    }
