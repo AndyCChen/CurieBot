@@ -4,6 +4,7 @@ require('dotenv').config({ path: '../../.env'});
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fetch = require('node-fetch');
 const { getFirestore } = require('firebase-admin/firestore');
+const escape = require('../../exports/escapeMarkdown');
 
 module.exports = {
    data: new SlashCommandBuilder()
@@ -14,12 +15,6 @@ module.exports = {
             .setDescription('SteamID from your profile url, enabled via settings -> Interface -> display web address')
             .setRequired(true)),
    async execute(interaction) {
-
-      // escape special markdown characters in discord chat
-      function escapeMarkdown(text) {
-         return text.replace(/(\*|_|`|\\)/g, '\\$1');
-      }
-
       // set api request url
       const key = process.env.KEY
       const steam_ID = interaction.options.getString('steam_id');
@@ -31,8 +26,6 @@ module.exports = {
 
       // playerCount = 0 if steamID is not linked to a existing steam account, else playerCount = 1
       const playerCount = data.response.players.length;
-
-      console.log(interaction.user.id);
 
       if (playerCount != 1) {
          await interaction.reply('Error, steam id not associated with a account.');
@@ -50,7 +43,7 @@ module.exports = {
             'steamID': steam_ID,
          });
 
-         const playerName = escapeMarkdown(data.response.players[0].personaname);
+         const playerName = escape.escapeMarkdown(data.response.players[0].personaname);
          await interaction.reply(`Success!\nHeyo ${playerName}`);
       }
    }

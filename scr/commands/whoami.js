@@ -5,17 +5,13 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 const { getFirestore } = require('firebase-admin/firestore');
+const escape = require('../../exports/escapeMarkdown');
 
 module.exports = {
    data: new SlashCommandBuilder()
       .setName('whoami')
       .setDescription('Displays image based on profile info.'),
    async execute(interaction) {
-      // escape special markdown characters in discord chat
-      function escapeMarkdown(text) {
-         return text.replace(/(\*|_|`|\\)/g, '\\$1');
-      }
-
       // instantiate firestore
       const db = getFirestore();
 
@@ -51,10 +47,10 @@ module.exports = {
          // pass timeStamp in as milliseconds
          const dateObject = new Date(unixTimeStamp * 1000);
          const date = dateObject.toLocaleString();
-         
+
          const playerSummaryEmbed = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(escapeMarkdown(playerSummaryData.response.players[0].personaname.toString()))
+            .setTitle(escape.escapeMarkdown(playerSummaryData.response.players[0].personaname.toString()))
             .setURL(playerSummaryData.response.players[0].profileurl.toString())
             .setImage(playerSummaryData.response.players[0].avatarfull.toString())
             .setDescription('Level: ' + playerLevelData.response.player_level.toString())
