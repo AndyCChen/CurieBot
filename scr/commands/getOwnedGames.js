@@ -65,13 +65,18 @@ module.exports = {
                // reset string to empty and stringLength to zero
                ownedGamesList = '';
                stringLength = 0;
+
+               // then appended gameEntry and gamePlaytime to newly reseted string
+               ownedGamesList += gameEntry;
+               totalHours += gamePlaytime;
+               n++;
             } else {
                ownedGamesList += gameEntry;
                totalHours += gamePlaytime;
                n++;
             }
          }
-         interaction.reply('**Total Applications:** ' + gamesCount + '\t**Total Hours:** ' + totalHours.toFixed(1) + ' hrs');
+         await interaction.reply('**Total Applications:** ' + gamesCount + '\t**Total Hours:** ' + totalHours.toFixed(1) + ' hrs');
          channel.send(ownedGamesList);
       }
    }

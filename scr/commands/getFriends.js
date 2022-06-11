@@ -69,9 +69,14 @@ module.exports = {
                const profilePic = friendSummaryData.response.players[0].avatarfull;
 
                // get date of when this user was added as friend
-               const unixTimeStamp = friendsListData.friendslist.friends[n].friend_since;
-               const dateObject = new Date(unixTimeStamp * 1000); // pass timeStamp in milliseconds
-               const date = dateObject.toLocaleString();
+               const friendSinceTimeStamp = friendsListData.friendslist.friends[n].friend_since;
+               let dateObject = new Date(friendSinceTimeStamp * 1000); // pass timeStamp in milliseconds
+               const friend_since = dateObject.toLocaleString();
+
+               // get date of account creation
+               const dateOfCreationTimeStamp = friendSummaryData.response.players[0].timecreated;
+               dateObject = new Date(dateOfCreationTimeStamp * 1000);
+               const dateOfCreation = dateObject.toLocaleString();
 
                // make embeded message object
                const embed = {
@@ -83,12 +88,28 @@ module.exports = {
                   fields: [
                      {
                         name: 'Friend since',
-                        value: date,
-                     }
+                        value: friend_since,
+                     },
+                     {
+                        name: 'Date Created',
+                        value: dateOfCreation,
+                     },
                   ]
                };
-               embedList.push(embed);
-               n++;
+
+               // only a max of 10 embeds allowed per message send in discord
+               // if list is about to be over 10 items long, send current list and then empty the list
+               if( (embedList.length + 1 ) > 10) {
+                  channel.send({
+                     embeds: embedList
+                  });
+
+                  embedList.splice(0, embedList.length);
+                  n++;
+               } else { // else continue pushing new embed objects onto the list
+                  embedList.push(embed);
+                  n++;
+               }
             }
             
             channel.send({
