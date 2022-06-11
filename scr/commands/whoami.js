@@ -32,12 +32,11 @@ module.exports = {
          const playerSummaryUrl = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${key}&steamids=${steam_ID}`;
          const playerLevelUrl = `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${key}&steamid=${steam_ID}`;
 
-         // make api request
-         // player summaries
+         // make api request for player summary
          const playerSummaryResponse = await fetch(playerSummaryUrl);
          const playerSummaryData = await playerSummaryResponse.json();
 
-         // player level
+         // make api request for player level
          const playerLevelResponse = await fetch(playerLevelUrl);
          const playerLevelData = await playerLevelResponse.json();
 
