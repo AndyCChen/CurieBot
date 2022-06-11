@@ -112,9 +112,12 @@ module.exports = {
                }
             }
             
-            channel.send({
-               embeds: embedList
-            });
+            // send remaining items in list if the list is not empty
+            if (embedList != 0) {
+               channel.send({
+                  embeds: embedList
+               });
+            }
          }
 
          await interaction.reply('**Total friends:** ' + friendCount.toString());
