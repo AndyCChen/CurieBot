@@ -5,12 +5,11 @@ require('dotenv').config({ path: '../../.env'});
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fetch = require('node-fetch');
 const { getFirestore } = require('firebase-admin/firestore');
-const { Client } = require('discord.js');
 
 module.exports = {
    data: new SlashCommandBuilder()
       .setName('ownedgames')
-      .setDescription('returned list of owned applications'),
+      .setDescription('returns list of owned applications'),
    async execute(interaction) {
       // instantiate firestore
       const db = getFirestore();
@@ -35,26 +34,31 @@ module.exports = {
          const ownedGamesResponse = await fetch(ownedGamesUrl);
          const ownedGamesData = await ownedGamesResponse.json();
 
-         // gamesCount for max loop iteration
-         const gamesCount = ownedGamesData.response.game_count;
-
-         // loop counter
-         let n = 0;
+         // channel to send message to
+         const channel_ID = interaction.channel.id;
+         const channel = interaction.client.channels.cache.get(channel_ID);
 
          // onwedGamesList is the string to send and is init to empty string
          let ownedGamesList = '';
          let stringLength = 0;
          const maxMessageLength = 2000;
 
-         // channel to send message to
-         const channel_ID = interaction.channel.id;
-         const channel = interaction.client.channels.cache.get(channel_ID);
+         let totalHours = 0;
+
+         // loop counter and gamesCount for max loop iterations
+         let n = 0;
+         const gamesCount = ownedGamesData.response.game_count;
 
          while (n < gamesCount) {
             let gameName = ownedGamesData.response.games[n].name;
-            stringLength = ownedGamesList.length + gameName.toString().length;
+            let gamePlaytime = ownedGamesData.response.games[n].playtime_forever / 60;
 
-            // if char count exceeds maxmessageLength, send current ownedGamesList string else continue appending gameName
+            // combine gameName and gamePlaytime into one entry per line
+            // EX: "1. Counter Strike 500 hrs"
+            let gameEntry = n + 1 + '. `' + gameName + '` \t' + gamePlaytime.toFixed(1) + ' hrs\n';
+            stringLength = ownedGamesList.length + gameEntry.toString().length;
+
+            // if char count exceeds maxmessageLength, send current ownedGamesList string else continue appending gameEntry to ownedGamesList
             if (stringLength > maxMessageLength) {
                channel.send(ownedGamesList);
 
@@ -62,11 +66,12 @@ module.exports = {
                ownedGamesList = '';
                stringLength = 0;
             } else {
-               ownedGamesList += n + 1 + '. ' + gameName + '\n';
+               ownedGamesList += gameEntry;
+               totalHours += gamePlaytime;
                n++;
             }
          }
-         interaction.reply('**Total Applications:** ' + gamesCount);
+         interaction.reply('**Total Applications:** ' + gamesCount + '\t**Total Hours:** ' + totalHours.toFixed(1) + ' hrs');
          channel.send(ownedGamesList);
       }
    }
