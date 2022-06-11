@@ -113,7 +113,7 @@ module.exports = {
             }
             
             // send remaining items in list if the list is not empty
-            if (embedList != 0) {
+            if (embedList.length != 0) {
                channel.send({
                   embeds: embedList
                });
