@@ -11,7 +11,7 @@ module.exports = {
       .setDescription('verify steam id.')
       .addStringOption(option =>
          option.setName('steam_id')
-            .setDescription('SteamID argument')
+            .setDescription('SteamID from your profile url, enabled via settings -> Interface -> display web address')
             .setRequired(true)),
    async execute(interaction) {
 
