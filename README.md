@@ -4,14 +4,16 @@ Built with ***google firestore database***, ***node.js*** and the ***discord.js*
 
 ## Slash Commands
 
-- **verify** - verify via steam id and writes it to firestore database so user is does not need to re-enter id   
-- **whoami** - returns an embeded message containing a small summary of player profile  
-- **ownedgames** -  returns a message containing a list of all owned applications and corresponding usage time  
-- **getfriends** -  returns a list of embeded messages of all current friends in friends list  
-- **deleteme** -  deletes user from firestore database  
+- **verify** - verify via steam id and writes it to firestore database so user is does not need to re-enter id  <br><br>
+![verify!](/images/verify.png "verify")
 
-## Examples
+- **whoami** - returns an embeded message containing a small summary of player profile  <br><br>
+![whoami!](/images/whoami.png "whoami")
 
-![whoami!](/images/whoami.png "whoami")  
-![getownedgames!](/images/getOwnedGames.png "getownedgames")  
+- **ownedgames** -  returns a message containing a list of all owned applications and corresponding usage time  <br><br>
+![getownedgames!](/images/getOwnedGames.png "getownedgames")
+
+- **getfriends** -  returns a list of embeded messages of all current friends in friends list  <br><br>
 ![getfriends!](/images/getFriends.png "getfriends")
+
+- **deleteme** -  deletes user from firestore database  <br><br>
