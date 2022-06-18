@@ -65,11 +65,6 @@ module.exports = {
                // reset string to empty and stringLength to zero
                ownedGamesList = '';
                stringLength = 0;
-
-               // then appended gameEntry and gamePlaytime to newly reseted string
-               ownedGamesList += gameEntry;
-               totalHours += gamePlaytime;
-               n++;
             } else {
                ownedGamesList += gameEntry;
                totalHours += gamePlaytime;
