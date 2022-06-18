@@ -9,3 +9,9 @@ Built with ***google firestore database***, ***node.js*** and the ***discord.js*
 - **ownedgames** -  returns a message containing a list of all owned applications and corresponding usage time  
 - **getfriends** -  returns a list of embeded messages of all current friends in friends list  
 - **deleteme** -  deletes user from firestore database  
+
+## Examples
+
+![whoami!](/images/whoami.png "whoami")  
+![getownedgames!](/images/getOwnedGames.png "getownedgames")  
+![getfriends!](/images/getFriends.png "getfriends")
